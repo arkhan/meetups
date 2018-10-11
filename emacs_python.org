@@ -23,6 +23,11 @@
 #+REVEAL_PLUGINS: (highlight)
 # https://github.com/fniessen/refcard-org-beamer
 # https://github.com/dfeich/org-babel-examples/
+# https://realpython.com/emacs-the-best-python-editor/
+# https://daemons.it/posts/convertir-emacs-en-un-ide-de-python/
+# https://daemons.it/posts/use-package-aislar-la-configuraci%C3%B3n-de-cada-paquete/
+# https://daemons.it/posts/hacer-la-configuraci%C3%B3n-de-emacs-auto-instalable/
+
 
 * Beamer configuration                                             :noexport:
 ** Basic
