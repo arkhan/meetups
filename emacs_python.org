@@ -1,0 +1,231 @@
+#+TITLE:     GNU Emacs como editor de código Python
+#+AUTHOR:    Edison Ibáñez
+#+EMAIL:     edison@disroot.org
+
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  es
+#+OPTIONS:   num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t
+#+OPTIONS:   tex:t d:nil todo:t pri:nil tags:nil
+#+OPTIONS:   timestamp:nil
+
+# started this on 2010-03-30 Tue
+
+# this allows defining headlines to be exported/not be exported
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+
+# By default I do not want that source code blocks are evaluated on export. Usually
+# I want to evaluate them interactively and retain the original results.
+#+PROPERTY: header-args :eval never-export
+
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
+#+REVEAL_PLUGINS: (highlight)
+# https://github.com/fniessen/refcard-org-beamer
+# https://github.com/dfeich/org-babel-examples/
+
+* Beamer configuration                                             :noexport:
+** Basic
+# this triggers loading the beamer menu (C-c C-b) when the file is read
+#+startup: beamer
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usepackage{ragged2e}
+#+LaTeX_HEADER: \justify
+
+#    Latex CLASS OPTIONS
+# [bigger]
+# [presentation]
+# [handout] : print handouts, i.e. slides with overlays will be printed with
+#   all overlays turned on (no animations).
+# [notes=show] : show notes in the generated output (note pages follow the real page)
+# [notes=only] : only render the nodes pages
+
+# this setting affects whether the initial PSI picture correctly fills
+# the title page, since it scales the title text. One can also use the
+# notes=show or notes=only options to produce notes pages in the output.
+# #+LaTeX_CLASS_OPTIONS: [t,10pt,notes=show]
+
+#+LaTeX_CLASS_OPTIONS: [t,10pt]
+
+
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+# export second level headings as beamer frames. All headlines below
+# the org-beamer-frame-level (i.e. below H value in OPTIONS), are
+# exported as blocks
+#+OPTIONS: H:2
+
+** Beamer Theme Definition
+#+BEAMER_THEME: Madrid
+# Note: custom style files can be placed centrally in the user specific directory
+# ~/texmf/tex. This will be searched recursively, so substructures are possible.
+# q.v. http://tex.stackexchange.com/questions/1137/where-do-i-place-my-own-sty-or-cls-files-to-make-them-available-to-all-my-te
+
+# One could also fine tune a number of theme settings instead of specifying the full theme
+#+BEAMER_COLOR_THEME: default
+# #+BEAMER_FONT_THEME: professionalfonts
+# #+BEAMER_INNER_THEME:
+#+BEAMER_OUTER_THEME: miniframes [subsection=false]
+# #+LATEX_CLASS: beamer
+
+
+** changes to BeginSection for TOC and navigation
+#+BEAMER_HEADER: \AtBeginSection[]{
+
+# This line inserts a table of contents with the current section highlighted at
+# the beginning of each section
+#+BEAMER_HEADER: \begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}
+
+# In order to have the miniframes/smoothbars navigation bullets even though we do not use subsections
+# q.v. https://tex.stackexchange.com/questions/2072/beamer-navigation-circles-without-subsections/2078#2078
+#+BEAMER_HEADER: \subsection{}
+#+BEAMER_HEADER: }
+
+** misc configuration
+# I want to define a style for hyperlinks
+#+BEAMER_HEADER: \hypersetup{colorlinks=true, linkcolor=blue}
+
+# this can be used to define the transparency of the covered layers
+#+BEAMER: \setbeamercovered{transparent=30}
+
+
+
+** Some remarks on options
+   - [[info:org#Export%20settings][info:org#Export settings]]
+   - The H:2 setting in the options line is important for setting the
+     Beamer frame level. Headlines will become frames when their level
+     is equal to =org-beamer-frame-level=.
+   - ^:{} interpret abc_{subs} as subscript, but not abc_subs
+   - num:t configures whether to use section numbers. If set to a number
+     only headlines of this level or above will be numbered
+   - ::t defines that lines starting with ":" will use fixed width font
+   - |:t include tables in export
+   - -:t Non-nil means interpret "\-", "--" and "---" for export.
+   - f:t include footnotes
+   - *:t Non-nil means interpret
+     : *word*, /word/, _word_ and +word+.
+   - <:t toggle inclusion of timestamps
+   - timestamp:t include a document creation timestamp into the exported file
+   - todo:t include exporting of todo keywords
+   - d:nil do not export org heading drawers
+   - tags:nil do not export headline tags
+
+** addtional LaTeX packages
+
+   # for generating example texts for testing
+   #+BEAMER_HEADER: \usepackage{blindtext}
+
+
+* Introducción
+** Introducción
+   #+BEGIN_EXPORT beamer
+   \vspace{0.3\textheight}
+   \begin{center}
+     \begin{minipage}[h]{.75\textwidth}
+       \centering
+       {\Huge Introducción}
+     \end{minipage}
+   \end{center}
+   #+END_EXPORT
+** ¿Que es *GNU Emacs*?
+   #+ATTR_LaTeX: :width 3cm
+   [[file:img/emacs.png]]
+   #+CAPTION: emacs
+
+   Es un editor de texto libre, de código abierto, extensible y
+   personalizable. Es multiplataforma y lo encontraremos disponible para
+   *Gnu/Linux, Windows y Mac*. Además está desarrollado por el proyecto GNU y
+   publicado bajo licencia GNU GPL.
+
+** ¿Que es *Python*?
+   #+ATTR_LaTeX: :width 3cm
+   [[file:img/python.png]]
+   #+CAPTION: python
+
+   Python es un lenguaje de programación interpretado cuya filosofía hace
+   hincapié en una sintaxis que favorezca un código legible.
+   Creado a finales de los ochenta por *Guido van Rossum* en el Centro para
+   las Matemáticas y la Informática....
+
+
+** Org mode version information
+
+   #+LATEX: \small
+  #+BEGIN_SRC emacs-lisp :results output :exports results :eval yes
+    (princ (concat (format "Emacs version:\n%s\n" (emacs-version))
+                   (format "\norg version: %s\n" (org-version))))
+
+  #+END_SRC
+
+  #+RESULTS:
+  : Emacs version:
+  : GNU Emacs 26.1 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.22.30)
+  :  of 2018-07-05
+  :
+  : org version: 9.1.14
+
+
+** Sources and Links
+- I started this example based on [[http://orgmode.org/worg/exporters/beamer/tutorial.html][the Worg hosted example by Eric S. Fraga]]
+- Basic LaTeX Beamer links
+  - [[http://www2.informatik.hu-berlin.de/~mischulz/beamer.html][An introduction to Beamer (German)]]
+  - great [[https://github.com/fniessen/refcard-org-beamer][beamer reference card]] by Fabrice Niessen on GitHub.
+  - nice link for choosing a theme: [[http://www.hartwork.org/beamer-theme-matrix/][beamer theme matrix]]
+  - [[http://www.mathematik.uni-leipzig.de/~hellmund/LaTeX/beamer2.pdf][nice example of beamer features (pure Latex)]]
+  - [[http://www.math.utah.edu/~smith/AmberSmith_GSAC_Beamer.pdf][Presentations using Latex - the Beamer Class]] by Amber Smith. Excellent
+    introduction showing many beamer features.
+
+*** Note							     :B_note:
+    :PROPERTIES:
+    :BEAMER_env: note
+    :END:
+    - an example of a note
+** A simple slide
+This slide consists of some text with a number of bullet points:
+- the first, very *important*, point!
+- the previous point shows the use of the special markup which
+  translates to the Beamer specific /alert/ command for highlighting
+  text.
+The above list could be numbered or any other type of list and may
+include sub-lists.
+
+** A more complex slide
+This slide illustrates the use of Beamer blocks.  The following text,
+with its own headline, is displayed in a block:
+*** Org mode increases productivity				  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+    - org mode means not having to remember \LaTeX commands.
+    - it is based on ascii text which is inherently portable.
+    - Emacs!
+
+    \hfill \(\qed\)
+
+** Tables
+   The size of the table font can be chosen by giving a =#+LATEX: \small=
+   command (or =\tiny= or =\footnotesize=)
+
+   #+LATEX: \footnotesize
+    #+NAME: tblWNs2014
+    | WNs | Processors         | Cores/node | HS06/node | total cores | total HS06 |
+    |-----+--------------------+------------+-----------+-------------+------------|
+    |  20 | 2*Xeon X5560       |          8 |       118 |         160 |       2360 |
+    |  11 | 2*E5-2670 2.60GHz  |         16 |       263 |         176 |       2893 |
+    |   4 | 2*AMD 6272 2.40GHz |         32 |       241 |         128 |        964 |
+    |-----+--------------------+------------+-----------+-------------+------------|
+    |  35 |                    |            |           |         464 |       6217 |
+#+TBLFM: @I$6..@II$6=$1*$4::@I$5..@II$5=$1*$3::@>$1=vsum(@I..@II)::@>$5..@>$6=vsum(@I..@II)
+
+** This is a notes page						     :B_note:
+   :PROPERTIES:
+   :BEAMER_env: note
+   :END:
+
+   This is a notes page with some information.
+
+* Como Configurar GNU Emacs
+** package.el(Tradicional)
+** use-package(Encapsulada)
