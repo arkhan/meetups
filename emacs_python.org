@@ -5,7 +5,7 @@
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE:  es
-#+OPTIONS:   num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t
+#+OPTIONS:   num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t date:nil author:nil
 #+OPTIONS:   tex:t d:nil todo:t pri:nil tags:nil
 #+OPTIONS:   timestamp:nil
 
@@ -36,13 +36,10 @@
 
 #+LaTeX_CLASS: beamer
 #+LATEX_CMD: xelatex
-#+LaTeX_HEADER: \usepackage{minted}
-#+LaTeX_HEADER: \usepackage{ragged2e}
-#+LaTeX_HEADER: \justify
-#+LaTeX_HEADER: \usepackage{xunicode,xltxtra,url,parskip}
-#+LaTeX_HEADER: \usepackage{fontspec}
-#+LaTeX_HEADER: \defaultfontfeatures{Mapping=tex-text}
-#+LaTeX_HEADER: \setmainfont[Path=./fonts/, Extension=.otf, SmallCapsFont=Fontin-SmallCaps.otf, BoldFont=Fontin-Bold.otf, ItalicFont=Fontin-Italic]{Fontin}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage{ragged2e}
+#+LATEX_HEADER: \justify
+
 
 #    Latex CLASS OPTIONS
 # [bigger]
@@ -139,23 +136,27 @@
      \end{minipage}
    \end{center}
    #+END_EXPORT
-** ¿Que es @@latex:{\sc GNU Emacs}@@?
+** ¿Que es ~GNU Emacs~?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
 
    Es un editor de texto libre, de código abierto, extensible y
-   personalizable. Es multiplataforma y lo encontraremos disponible para
+   personalizable, es multiplataforma y lo encontraremos disponible para
    *Gnu/Linux, Windows y Mac*. Además está desarrollado por el proyecto GNU y
    publicado bajo licencia GNU GPL.
 ** ¿Como instalar ~GNU Emacs~?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
+   ~GNU Emacs~ viene en todas de Distribuciones GNU/Linux, por lo
+   que se lo puede instalar desde los repositorios oficiales de cada
+   una.
+   Para encontrar instrucciones mas detallas de como instalar ~GNU
+   Emacs~ en cualquier Sistema Operativo pueden visitar el siguiente
+   sitio: [[https://www.gnu.org/software/emacs/download.html][https://www.gnu.org/software/emacs/download.html]]
 
-
-
-** ¿Que es *Python*?
+** ¿Que es ~Python~?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/python.png]]
    #+CAPTION: python
@@ -164,8 +165,20 @@
    hincapié en una sintaxis que favorezca un código legible.
    Creado a finales de los ochenta por *Guido van Rossum* en el Centro para
    las Matemáticas y la Informática....
-
-
+** ¿Que es un ~IDE~?
+   Un entorno de desarrollo integrado o entorno de desarrollo
+   interactivo, en inglés Integrated Development Environment (IDE).
+   - Características:
+     - Multiplataforma
+     - Soporte para diversos lenguajes de programación
+     - Integración con Sistemas de Control de Versiones
+     - Reconocimiento de Sintaxis
+     - Extensiones y Componentes para el IDE
+     - Integración con Framework populares
+     - Depurador
+     - Importar y Exportar proyectos
+     - Múltiples idiomas
+     - Manual de Usuarios y Ayuda
 * Como Configurar GNU Emacs
 ** package.el(Tradicional)
 ** use-package(Encapsulada)
