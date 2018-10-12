@@ -35,9 +35,14 @@
 #+startup: beamer
 
 #+LaTeX_CLASS: beamer
+#+LATEX_CMD: xelatex
 #+LaTeX_HEADER: \usepackage{minted}
 #+LaTeX_HEADER: \usepackage{ragged2e}
 #+LaTeX_HEADER: \justify
+#+LaTeX_HEADER: \usepackage{xunicode,xltxtra,url,parskip}
+#+LaTeX_HEADER: \usepackage{fontspec}
+#+LaTeX_HEADER: \defaultfontfeatures{Mapping=tex-text}
+#+LaTeX_HEADER: \setmainfont[Path=./fonts/, Extension=.otf, SmallCapsFont=Fontin-SmallCaps.otf, BoldFont=Fontin-Bold.otf, ItalicFont=Fontin-Italic]{Fontin}
 
 #    Latex CLASS OPTIONS
 # [bigger]
@@ -134,7 +139,7 @@
      \end{minipage}
    \end{center}
    #+END_EXPORT
-** ¿Que es *GNU Emacs*?
+** ¿Que es @@latex:{\sc GNU Emacs}@@?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
@@ -143,6 +148,12 @@
    personalizable. Es multiplataforma y lo encontraremos disponible para
    *Gnu/Linux, Windows y Mac*. Además está desarrollado por el proyecto GNU y
    publicado bajo licencia GNU GPL.
+** ¿Como instalar ~GNU Emacs~?
+   #+ATTR_LaTeX: :width 3cm
+   [[file:img/emacs.png]]
+   #+CAPTION: emacs
+
+
 
 ** ¿Que es *Python*?
    #+ATTR_LaTeX: :width 3cm
@@ -154,82 +165,6 @@
    Creado a finales de los ochenta por *Guido van Rossum* en el Centro para
    las Matemáticas y la Informática....
 
-
-** Org mode version information
-
-   #+LATEX: \small
-  #+BEGIN_SRC emacs-lisp :results output :exports results :eval yes
-    (princ (concat (format "Emacs version:\n%s\n" (emacs-version))
-                   (format "\norg version: %s\n" (org-version))))
-
-  #+END_SRC
-
-  #+RESULTS:
-  : Emacs version:
-  : GNU Emacs 26.1 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.22.30)
-  :  of 2018-07-05
-  :
-  : org version: 9.1.14
-
-
-** Sources and Links
-- I started this example based on [[http://orgmode.org/worg/exporters/beamer/tutorial.html][the Worg hosted example by Eric S. Fraga]]
-- Basic LaTeX Beamer links
-  - [[http://www2.informatik.hu-berlin.de/~mischulz/beamer.html][An introduction to Beamer (German)]]
-  - great [[https://github.com/fniessen/refcard-org-beamer][beamer reference card]] by Fabrice Niessen on GitHub.
-  - nice link for choosing a theme: [[http://www.hartwork.org/beamer-theme-matrix/][beamer theme matrix]]
-  - [[http://www.mathematik.uni-leipzig.de/~hellmund/LaTeX/beamer2.pdf][nice example of beamer features (pure Latex)]]
-  - [[http://www.math.utah.edu/~smith/AmberSmith_GSAC_Beamer.pdf][Presentations using Latex - the Beamer Class]] by Amber Smith. Excellent
-    introduction showing many beamer features.
-
-*** Note							     :B_note:
-    :PROPERTIES:
-    :BEAMER_env: note
-    :END:
-    - an example of a note
-** A simple slide
-This slide consists of some text with a number of bullet points:
-- the first, very *important*, point!
-- the previous point shows the use of the special markup which
-  translates to the Beamer specific /alert/ command for highlighting
-  text.
-The above list could be numbered or any other type of list and may
-include sub-lists.
-
-** A more complex slide
-This slide illustrates the use of Beamer blocks.  The following text,
-with its own headline, is displayed in a block:
-*** Org mode increases productivity				  :B_theorem:
-    :PROPERTIES:
-    :BEAMER_env: theorem
-    :END:
-    - org mode means not having to remember \LaTeX commands.
-    - it is based on ascii text which is inherently portable.
-    - Emacs!
-
-    \hfill \(\qed\)
-
-** Tables
-   The size of the table font can be chosen by giving a =#+LATEX: \small=
-   command (or =\tiny= or =\footnotesize=)
-
-   #+LATEX: \footnotesize
-    #+NAME: tblWNs2014
-    | WNs | Processors         | Cores/node | HS06/node | total cores | total HS06 |
-    |-----+--------------------+------------+-----------+-------------+------------|
-    |  20 | 2*Xeon X5560       |          8 |       118 |         160 |       2360 |
-    |  11 | 2*E5-2670 2.60GHz  |         16 |       263 |         176 |       2893 |
-    |   4 | 2*AMD 6272 2.40GHz |         32 |       241 |         128 |        964 |
-    |-----+--------------------+------------+-----------+-------------+------------|
-    |  35 |                    |            |           |         464 |       6217 |
-#+TBLFM: @I$6..@II$6=$1*$4::@I$5..@II$5=$1*$3::@>$1=vsum(@I..@II)::@>$5..@>$6=vsum(@I..@II)
-
-** This is a notes page						     :B_note:
-   :PROPERTIES:
-   :BEAMER_env: note
-   :END:
-
-   This is a notes page with some information.
 
 * Como Configurar GNU Emacs
 ** package.el(Tradicional)
