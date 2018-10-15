@@ -19,8 +19,6 @@
 # I want to evaluate them interactively and retain the original results.
 #+PROPERTY: header-args :eval never-export
 
-#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
-#+REVEAL_PLUGINS: (highlight)
 # https://github.com/fniessen/refcard-org-beamer
 # https://github.com/dfeich/org-babel-examples/
 # https://realpython.com/emacs-the-best-python-editor/
@@ -39,7 +37,7 @@
 #+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{ragged2e}
 #+LATEX_HEADER: \justify
-
+#+LaTeX_HEADER: \usemintedstyle{monokai}
 
 #    Latex CLASS OPTIONS
 # [bigger]
@@ -71,7 +69,7 @@
 # q.v. http://tex.stackexchange.com/questions/1137/where-do-i-place-my-own-sty-or-cls-files-to-make-them-available-to-all-my-te
 
 # One could also fine tune a number of theme settings instead of specifying the full theme
-#+BEAMER_COLOR_THEME: default
+# #+BEAMER_COLOR_THEME: default
 # #+BEAMER_FONT_THEME: professionalfonts
 # #+BEAMER_INNER_THEME:
 #+BEAMER_OUTER_THEME: miniframes [subsection=false]
@@ -126,6 +124,7 @@
 
 
 * Introducción
+
 ** Introducción
    #+BEGIN_EXPORT beamer
    \vspace{0.3\textheight}
@@ -136,6 +135,7 @@
      \end{minipage}
    \end{center}
    #+END_EXPORT
+
 ** ¿Que es ~GNU Emacs~?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/emacs.png]]
@@ -145,6 +145,7 @@
    personalizable, es multiplataforma y lo encontraremos disponible para
    *Gnu/Linux, Windows y Mac*. Además está desarrollado por el proyecto GNU y
    publicado bajo licencia GNU GPL.
+
 ** ¿Como instalar ~GNU Emacs~?
    #+ATTR_LaTeX: :width 3cm
    [[file:img/emacs.png]]
@@ -165,20 +166,73 @@
    hincapié en una sintaxis que favorezca un código legible.
    Creado a finales de los ochenta por *Guido van Rossum* en el Centro para
    las Matemáticas y la Informática....
+
 ** ¿Que es un ~IDE~?
    Un entorno de desarrollo integrado o entorno de desarrollo
    interactivo, en inglés Integrated Development Environment (IDE).
    - Características:
-     - Multiplataforma
-     - Soporte para diversos lenguajes de programación
-     - Integración con Sistemas de Control de Versiones
-     - Reconocimiento de Sintaxis
-     - Extensiones y Componentes para el IDE
-     - Integración con Framework populares
-     - Depurador
-     - Importar y Exportar proyectos
-     - Múltiples idiomas
-     - Manual de Usuarios y Ayuda
-* Como Configurar GNU Emacs
-** package.el(Tradicional)
-** use-package(Encapsulada)
+     1. Multiplataforma
+     2. Soporte para diversos lenguajes de programación
+     3. Integración con Sistemas de Control de Versiones
+     4. Reconocimiento de Sintaxis
+     5. Extensiones y Componentes para el IDE
+     6. Integración con Framework populares
+     7. Depurador
+     8. Importar y Exportar proyectos
+     9. Múltiples idiomas
+     10. Manual de Usuarios y Ayuda
+* GNU Emacs
+
+** GNU Emacs
+   #+BEGIN_EXPORT beamer
+   \vspace{0.3\textheight}
+   \begin{center}
+     \begin{minipage}[h]{.75\textwidth}
+       \centering
+       {\Huge GNU Emacs}
+     \end{minipage}
+   \end{center}
+   #+END_EXPORT
+
+** Uso Básico
+   #+ATTR_LaTeX: :width 3cm
+   [[file:img/emacs.png]]
+   #+CAPTION: emacs
+   ~GNU Emacs~ trae con sigo un excelente tutorial, para acceder a
+   este bata con presionar la combinación de teclas: ~<C-h> t~.
+
+** Configuración
+   #+ATTR_LaTeX: :width 3cm
+   [[file:img/emacs.png]]
+   #+CAPTION: emacs
+   Para configurar ~GNU Emacs~ es necesario crear un archivo llamado
+   ~init.el~ en el ~$HOME~ de nuestro usuario:
+*** Shell                                                           :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+    #+BEGIN_EXAMPLE bash
+      $ touch ~/.emacs.d/init.el
+    #+END_EXAMPLE
+*** ign                                                     :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+    Para mayor información se puede vitar el siguiente enlace [[https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html#Location-of-init-file][Ubicación
+    de Archivo init.el  ]]
+
+** Paquetes
+*** Repositorios                                                    :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+    #+BEGIN_EXAMPLE emacs-lisp
+      (setq package-archives
+          '(("gnu" . "http://elpa.gnu.org/packages/")
+            ("melpa" . "http://melpa.org/packages/")
+            ("org" . "https://orgmode.org/elpa/"))
+          package-archive-priorities
+          '(("melpa" . 10)
+            ("gnu" . 5)
+            ("org" . 0)))
+    #+END_EXAMPLE
