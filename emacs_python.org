@@ -53,7 +53,7 @@
 # notes=show or notes=only options to produce notes pages in the output.
 # #+LaTeX_CLASS_OPTIONS: [t,10pt,notes=show]
 
-#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
 
 # export second level headings as beamer frames. All headlines below
 # the org-beamer-frame-level (i.e. below H value in OPTIONS), are
