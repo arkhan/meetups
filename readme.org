@@ -1,26 +1,44 @@
-#+TITLE:     GNU Emacs como editor de código Python
-#+AUTHOR:    Edison Ibáñez
-#+EMAIL:     edison@disroot.org
-#+LANGUAGE:  es
+#+TITLE: GNU Emacs como editor de código Python
+#+AUTHOR: Edison Ibáñez
+#+EMAIL: edison@disroot.org
+#+DATE: 2018-10-28
+#+LANGUAGE: es
 #+DESCRIPTION: Introducción a GNU Emacs como IDE para Python
-#+OPTIONS:   num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t date:nil author:nil
-#+OPTIONS:   tex:t d:nil todo:t pri:nil tags:nil
-#+OPTIONS:   timestamp:nil
-#+OPTIONS: H2
+#+OPTIONS: num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t
+#+OPTIONS: tex:t d:nil todo:t pri:nil tags:nil
+#+OPTIONS: timestamp:t
+#+PROPERTY: header-args :eval never-export
+
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
+#+REVEAL_THEME: black
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_EXTRA_CSS: ./static/css/acm.css
+
 #+STARTUP: beamer
 #+LaTeX_CLASS: beamer
 #+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{ragged2e}
 #+LATEX_HEADER: \justify
 #+LaTeX_HEADER: \usemintedstyle{emacs}
+#+LaTeX_CLASS_OPTIONS: [t,10pt]
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+OPTIONS: H:2
 
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+
+#+BEAMER_THEME: Madrid
+#+BEAMER_OUTER_THEME: miniframes [subsection=false]
+#+BEAMER_HEADER: \usepackage{blindtext}
+#+BEAMER_HEADER: \AtBeginSection[]{
+#+BEAMER_HEADER: \begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}
+#+BEAMER_HEADER: \subsection{}
+#+BEAMER_HEADER: }
+#+BEAMER_HEADER: \hypersetup{colorlinks=true, linkcolor=blue}
+#+BEAMER: \setbeamercovered{transparent=30}
 
 * Introducción
 ** ¿Que es GNU Emacs?
-#+ATTR_ORG: :width 100
-#+ATTR_LATEX: :width 6.0in
-#+ATTR_HTML: :width 600px
-[[file:img/emacs.png][Emacs]]
 
 Es un editor de texto que dispone de gran cantidad de funciones.
 
@@ -30,38 +48,58 @@ personalizable, auto-documentado y de tiempo real.
 El *EMACS* original significa, Editor MACroS para el TECO. Fue escrito
 en 1975 por *Richard Stallman* junto con *Guy Steele.*
 
-** Instalación
-GNU Emacs tiene soporte para la mayoría de los *Sistemas Operativos*
-mas populares.
-
-*** GNU Linux
+* Instalación
+** GNU Linux
+   :PROPERTIES:
+   :BEAMER_act: [<+->]
+   :END:
+#+LATEX: \setbeamercovered{transparent=30}
 La mayoría de las distribuciones de GNU / Linux proporcionan GNU Emacs
 en sus repositorios, esta es la forma recomendada de Instalarlo, para
 disponer de la ultima verison.
-**** Archlinux
+**** Archlinux                                                      :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
 #+BEGIN_SRC sh
   $ sudo pacman -S emacs
 #+END_SRC
-**** Ubuntu/Debian y derivados
+**** Ubuntu/Debian y derivados                                      :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
 #+BEGIN_SRC sh
   $ sudo apt-get install emacs
 #+END_SRC
-**** Fedora/Centos y derivados
+**** Fedora/Centos y derivados                                      :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
 #+BEGIN_SRC sh
   $ sudo yum install emacs
 #+END_SRC
 
-*** OSX
-**** Homebrew
+** OSX
+   :PROPERTIES:
+   :BEAMER_act: [<+->]
+   :END:
+#+LATEX: \setbeamercovered{transparent=30}
+**** Homebrew                                                       :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
 #+BEGIN_SRC sh
   $ brew install emacs --with-cocoa
 #+END_SRC
-**** MacPorts
+**** MacPorts                                                       :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
 #+BEGIN_SRC sh
   $ sudo port install emacs-app
 #+END_SRC
 
-*** Otros
+** Otros
 Para mayor información se puede acceder al siguiente enlace: [[https://www.gnu.org/software/emacs/download.html][GNU Emacs]]
 
 ** Lo Básico
