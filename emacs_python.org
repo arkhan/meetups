@@ -1,13 +1,10 @@
 #+TITLE:     GNU Emacs como editor de código Python
 #+AUTHOR:    Edison Ibáñez
 #+EMAIL:     edison@disroot.org
-
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE:  es
-#+OPTIONS:   num:t toc:nil ::t |:t ^:{} -:t f:t *:t <:t date:nil author:nil
-#+OPTIONS:   tex:t d:nil todo:t pri:nil tags:nil
-#+OPTIONS:   timestamp:nil
+#+OPTIONS: toc:nil
 
 # started this on 2010-03-30 Tue
 
@@ -26,17 +23,22 @@
 # https://daemons.it/posts/use-package-aislar-la-configuraci%C3%B3n-de-cada-paquete/
 # https://daemons.it/posts/hacer-la-configuraci%C3%B3n-de-emacs-auto-instalable/
 
+* Reveal Configuration                                             :noexport:
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
+#+REVEAL: split
+#+REVEAL_THEME: black
 
 * Beamer configuration                                             :noexport:
 ** Basic
 # this triggers loading the beamer menu (C-c C-b) when the file is read
-#+startup: beamer
 
 #+LaTeX_CLASS: beamer
 #+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{ragged2e}
 #+LATEX_HEADER: \justify
-#+LaTeX_HEADER: \usemintedstyle{emacs}
+#+LaTeX_CLASS_OPTIONS: [t,9pt]
+
+#+STARTUP: beamer
 
 #    Latex CLASS OPTIONS
 # [bigger]
@@ -51,10 +53,7 @@
 # notes=show or notes=only options to produce notes pages in the output.
 # #+LaTeX_CLASS_OPTIONS: [t,10pt,notes=show]
 
-#+LaTeX_CLASS_OPTIONS: [t,10pt]
-
-
-#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 
 # export second level headings as beamer frames. All headlines below
 # the org-beamer-frame-level (i.e. below H value in OPTIONS), are
@@ -62,7 +61,7 @@
 #+OPTIONS: H:2
 
 ** Beamer Theme Definition
-#+BEAMER_THEME: Madrid
+#+BEAMER_THEME: metropolis
 # Note: custom style files can be placed centrally in the user specific directory
 # ~/texmf/tex. This will be searched recursively, so substructures are possible.
 # q.v. http://tex.stackexchange.com/questions/1137/where-do-i-place-my-own-sty-or-cls-files-to-make-them-available-to-all-my-te
@@ -71,9 +70,9 @@
 # #+BEAMER_COLOR_THEME: default
 # #+BEAMER_FONT_THEME: professionalfonts
 # #+BEAMER_INNER_THEME:
-#+BEAMER_OUTER_THEME: miniframes [subsection=false]
+# #+BEAMER_OUTER_THEME: miniframes [subsection=false]
 # #+LATEX_CLASS: beamer
-
+# #+BEAMER_FRAME_LEVEL: 2
 
 ** changes to BeginSection for TOC and navigation
 #+BEAMER_HEADER: \AtBeginSection[]{
@@ -121,22 +120,10 @@
    # for generating example texts for testing
    #+BEAMER_HEADER: \usepackage{blindtext}
 
-
 * Introducción
-
-** Introducción
-   #+BEGIN_EXPORT beamer
-   \vspace{0.3\textheight}
-   \begin{center}
-     \begin{minipage}[h]{.75\textwidth}
-       \centering
-       {\Huge Introducción}
-     \end{minipage}
-   \end{center}
-   #+END_EXPORT
-
 ** ¿Que es ~GNU Emacs~?
-   #+ATTR_LaTeX: :width 3cm
+   #+ATTR_HTML: :width 200
+   #+ATTR_LaTeX: :width 2cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
 
@@ -145,8 +132,9 @@
    *Gnu/Linux, Windows y Mac*. Además está desarrollado por el proyecto GNU y
    publicado bajo licencia GNU GPL.
 
-** ¿Como instalar ~GNU Emacs~?
-   #+ATTR_LaTeX: :width 3cm
+** ¿Como instalar ~GNU Emacs~?                                     :noexport:
+   #+ATTR_HTML: :width 200
+   #+ATTR_LaTeX: :width 2cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
    ~GNU Emacs~ viene en todas de Distribuciones GNU/Linux, por lo
@@ -156,8 +144,9 @@
    Emacs~ en cualquier Sistema Operativo pueden visitar el siguiente
    sitio: [[https://www.gnu.org/software/emacs/download.html][https://www.gnu.org/software/emacs/download.html]]
 
-** ¿Que es ~Python~?
-   #+ATTR_LaTeX: :width 3cm
+** ¿Que es ~Python~?                                               :noexport:
+   #+ATTR_HTML: :width 200
+   #+ATTR_LaTeX: :width 2cm
    [[file:img/python.png]]
    #+CAPTION: python
 
@@ -166,22 +155,22 @@
    Creado a finales de los ochenta por *Guido van Rossum* en el Centro para
    las Matemáticas y la Informática....
 
-** ¿Que es un ~IDE~?
+** ¿Que es un ~IDE~?                                               :noexport:
    Un entorno de desarrollo integrado o entorno de desarrollo
    interactivo, en inglés Integrated Development Environment (IDE).
    - Características:
-     1. Multiplataforma
-     2. Soporte para diversos lenguajes de programación
-     3. Integración con Sistemas de Control de Versiones
-     4. Reconocimiento de Sintaxis
-     5. Extensiones y Componentes para el IDE
-     6. Integración con Framework populares
-     7. Depurador
-     8. Importar y Exportar proyectos
-     9. Múltiples idiomas
-     10. Manual de Usuarios y Ayuda
-* GNU Emacs
+     + Multiplataforma
+     + Soporte para diversos lenguajes de programación
+     + Integración con Sistemas de Control de Versiones
+     + Reconocimiento de Sintaxis
+     + Extensiones y Componentes para el IDE
+     + Integración con Framework populares
+     + Depurador
+     + Importar y Exportar proyectos
+     + Múltiples idiomas
+     + Manual de Usuarios y Ayuda
 
+* GNU Emacs                                                        :noexport:
 ** GNU Emacs
    #+BEGIN_EXPORT beamer
    \vspace{0.3\textheight}
@@ -194,43 +183,156 @@
    #+END_EXPORT
 
 ** Uso Básico
-   #+ATTR_LaTeX: :width 3cm
+   #+ATTR_HTML: :width 200
+   #+ATTR_LaTeX: :width 2cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
    ~GNU Emacs~ trae con sigo un excelente tutorial, para acceder a
    este bata con presionar la combinación de teclas: ~<C-h> t~.
 
-** Configuración
-   #+ATTR_LaTeX: :width 3cm
+** Archivo de Configuración
+   #+ATTR_HTML: :width 200
+   #+ATTR_LaTeX: :width 2cm
    [[file:img/emacs.png]]
    #+CAPTION: emacs
    La configuración de ~GNU Emacs~ se la hace usando el lenguaje [[https://en.wikipedia.org/wiki/Emacs_Lisp][elisp o Emacs
    Lisp]], para esto es necesario crear un archivo llamado ~init.el~ en el ~$HOME~
-   de nuestro usuario:
-*** Shell                                                           :B_block:
+   de nuestro usuario[fn:1]:
+*** Shell                                                     :BMCOL:B_block:
     :PROPERTIES:
     :BEAMER_env: block
     :END:
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
     #+BEGIN_SRC shell
       $ touch ~/.emacs.d/init.el
     #+END_SRC
-*** ign                                                     :B_ignoreheading:
-    :PROPERTIES:
-    :BEAMER_env: ignoreheading
-    :END:
-    Para mayor información se puede vitar el siguiente enlace
-    [[https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html#Location-of-init-file][Ubicación de Archivo init.el]]
 
-** Paquetes
-*** Repositorios                                                    :B_block:
+** Garbage Collection o Recolección de Basura
+   Para darle un poco de velocidad al momento de cargar nuestra
+   configuración, vamos a establecer el umbral de ~Garbage Collection~
+   alto durante el inicio.
+*** Emacs Lisp                                                      :B_block:
     :PROPERTIES:
     :BEAMER_env: block
+    :BEAMER_opt: allowframebreaks,label=
     :END:
+    #+LATEX: \scriptsize
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
     #+BEGIN_SRC emacs-lisp
-      (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                               ("melpa" . "http://melpa.org/packages/")
-                               ("org" . "https://orgmode.org/elpa/"))
-            package-archive-priorities '(("melpa" . 10)
-                                         ("gnu" . 5)
-                                         ("org" . 0)))
+      ;;; init.el --- .Emacs Configuration -*- lexical-binding: t -*-
+      ;;; Commentary:
+      ;; This config start here
+
+      ;;; Code:
+      ;; ref: https://blog.d46.us/advanced-emacs-startup/
+      (defvar cfg--file-name-handler-alist file-name-handler-alist)
+      (setq gc-cons-threshold 402653184
+            gc-cons-percentage 0.6
+            file-name-handler-alist nil)
+
     #+END_SRC
+
+** Configuración de Repositorios
+   Antes de empezar a editar la configuración de ~GNU Emacs~, debemos
+   indicarle al ~ELPA~ de donde debe descargar los paquetes, para esto
+   configuramos los repositorios de la siguiente manera.
+*** Emacs Lisp                                                      :B_block:
+    :PROPERTIES:
+    :BEAMER_col: 0.8
+    :BEAMER_env: block
+    :BEAMER_opt: allowframebreaks,label=
+    :END:
+    #+LATEX: \scriptsize
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
+    #+BEGIN_SRC emacs-lisp
+      (setq package-archives
+          '(("gnu" . "http://elpa.gnu.org/packages/")
+            ("melpa" . "http://melpa.org/packages/")
+            ("org" . "https://orgmode.org/elpa/"))
+          package-archive-priorities
+          '(("melpa" . 10)
+            ("gnu" . 5)
+            ("org" . 0)))
+    #+END_SRC
+
+** use-package, bind-key, diminish
+   ~use-package~ es una *macro declaración* que permite aislar la
+   configuración de un paquete en nuestro archivo ~$HOME/.emacs.d/init.el~
+*** Emacs Lisp
+    :PROPERTIES:
+    :BEAMER_col: 0.8
+    :BEAMER_env: block
+    :BEAMER_opt: allowframebreaks,label=
+    :END:
+    #+LATEX: \scriptsize
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
+    #+BEGIN_SRC emacs-lisp
+      (setq load-prefer-newer t)
+      ;; initialize the packages and create the packages list if not exists
+      (package-initialize)
+      (when (not package-archive-contents)
+        (package-refresh-contents))
+
+      ;; install use-package if not exists
+      (unless (package-installed-p 'use-package)
+        (package-install 'use-package))
+
+      (eval-when-compile
+        (require 'use-package))
+      (require 'diminish)
+      (require 'bind-key)
+    #+END_SRC
+
+** Cache
+   Para mantener lo mas limpio posible nuestro directorio
+   ~$HOME/.emacs.d~ vamos a utilizar el paquete ~no-littering~, y
+   vamos a empezar a enviar todo el contenido que no forme parte de
+   nuestra configuración.
+*** Emacs Lisp                                                      :B_block:
+    :PROPERTIES:
+    :BEAMER_col: 0.8
+    :BEAMER_env: block
+    :BEAMER_opt: allowframebreaks,label=
+    :END:
+    #+LATEX: \scriptsize
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
+    #+BEGIN_SRC emacs-lisp
+      (use-package no-littering
+          :ensure t
+          :init
+          (setq no-littering-var-directory
+                (expand-file-name "cache/var/" user-emacs-directory)
+                no-littering-etc-directory
+                (expand-file-name "cache/etc/" user-emacs-directory)))
+
+
+      (setq-default semanticdb-default-save-directory
+                    (concat no-littering-var-directory "semanticdb")
+                    url-configuration-directory
+                    (concat no-littering-var-directory "url")
+                    eshell-directory-name
+                    (concat no-littering-var-directory "eshell" ))
+    #+END_SRC
+** Bookmarks
+*** Emacs Lisp                                                      :B_block:
+    :PROPERTIES:
+    :BEAMER_col: 0.8
+    :BEAMER_env: block
+    :BEAMER_opt: allowframebreaks,label=
+    :END:
+    #+LATEX: \scriptsize
+    #+ATTR_LATEX: :options xleftmargin=20pt, linenos
+    #+BEGIN_SRC emacs-lisp
+      (use-package bookmark
+          :config
+          (setq bookmark-default-file
+                (concat no-littering-var-directory "bookmarks"))
+          (when (file-exists-p bookmark-default-file)
+            (bookmark-load bookmark-default-file t)))
+    #+END_SRC
+
+* Footnotes
+
+[fn:2] [[https://es.wikipedia.org/wiki/Entorno_de_desarrollo_integrado][Entorno de Desarrollo Integrado]]
+
+[fn:1] [[https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html#Location-of-init-file][Location of Init File]]
