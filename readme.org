@@ -27,8 +27,10 @@
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 
-#+BEAMER_THEME: Madrid
-#+BEAMER_OUTER_THEME: miniframes [subsection=false]
+#+BEAMER_THEME: Darmstadt
+#+BEAMER_COLOR_THEME: seahorse
+#+BEAMER_INNER_THEME: [shadow]rounded
+#+BEAMER_OUTER_THEME: infolines
 #+BEAMER_HEADER: \usepackage{blindtext}
 #+BEAMER_HEADER: \AtBeginSection[]{
 #+BEAMER_HEADER: \begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}
@@ -38,8 +40,8 @@
 #+BEAMER: \setbeamercovered{transparent=30}
 
 * Introducción
-** ¿Que es GNU Emacs?
-
+** ¿Que es Emacs?
+#+LATEX: \vfill
 Es un editor de texto que dispone de gran cantidad de funciones.
 
 En su manual se lo describe como "un editor extensible,
@@ -54,7 +56,7 @@ en 1975 por *Richard Stallman* junto con *Guy Steele.*
    :BEAMER_act: [<+->]
    :END:
 #+LATEX: \setbeamercovered{transparent=30}
-La mayoría de las distribuciones de GNU / Linux proporcionan GNU Emacs
+La mayoría de las distribuciones de GNU/Linux proporcionan Emacs
 en sus repositorios, esta es la forma recomendada de Instalarlo, para
 disponer de la ultima verison.
 **** Archlinux                                                      :B_block:
@@ -79,42 +81,53 @@ disponer de la ultima verison.
   $ sudo yum install emacs
 #+END_SRC
 
-** OSX
-   :PROPERTIES:
-   :BEAMER_act: [<+->]
-   :END:
-#+LATEX: \setbeamercovered{transparent=30}
-**** Homebrew                                                       :B_block:
-     :PROPERTIES:
-     :BEAMER_env: block
-     :END:
-#+BEGIN_SRC sh
-  $ brew install emacs --with-cocoa
-#+END_SRC
-**** MacPorts                                                       :B_block:
-     :PROPERTIES:
-     :BEAMER_env: block
-     :END:
-#+BEGIN_SRC sh
-  $ sudo port install emacs-app
-#+END_SRC
+** Otros Sistemas
+#+LATEX: \vfill
+Para mayor información se puede acceder al siguiente enlace: [[https://www.gnu.org/software/emacs/download.html][Emacs]]
 
-** Otros
-Para mayor información se puede acceder al siguiente enlace: [[https://www.gnu.org/software/emacs/download.html][GNU Emacs]]
+* Uso de Emacs
+** Comandos
+Emacs utiliza combinaciones de teclas para realizar varias
+acciones.
 
-** Lo Básico
-- Comandos:
+- Teclas:
   - Control (C)
   - Alt (Meta) (M)
   - Windows (Super) (s)
-  - M-x (Simples)
-  - C-x C-s (Multiples combinadas)
-  - C-h k (Con letras sueltas)
 
+#+LATEX: \small
+| Comando             | Tecla     | Descripción                                         |
+|---------------------+-----------+-----------------------------------------------------|
+| ~search-word~       | ~C-s~     | Buscar una palabra en el buffer.                    |
+| ~undo~              | ~C-/~     | Deshacer el último cambio.                          |
+| ~keyboard-quit~     | ~C-g~     | Abortar el comando actual.                          |
+| ~find-file~         | ~C-x C-f~ | Buscar y abrir un archivo.                          |
+| ~save-buffer~       | ~C-x C-s~ | Guardar.                                            |
+| ~save-with-newname~ | ~C-x C-w~ | Guardar como.                                       |
+| ~cut~               | ~C-w~     | Cortar todo el texto entre el marcador y el cursor. |
+| ~copy~              | ~M-w~     | Copiar todo el texto entre el marcador y el cursor. |
+| ~paste~             | ~C-y~     | Pegar texto del portapapeles de Emacs.              |
+
+#+LATEX: \normalsize
 Mayor información *C-h t*
 
+** El Minibuffer
+#+LATEX: \vfill
+Es el espacio en el que Emacs pide información. Se puede introducir el
+texto que se debe encontrar en una búsqueda, el nombre de un fichero
+para leer o guardar e información similar.
+
+** Gestión de ficheros y visualización
+#+LATEX: \vfill
+Emacs permite la edición y visualización de ficheros mediante el uso
+de *buffers*, cada vez que se abre un archivo o fichero se crea un
+nuevo buffer con el nombre del archivo.
+
+Mayor información [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][Buffers]]
+
+* Configuracion
 ** Configuración y Paquetes
-La configuración de GNU Emacs se la hace usando el dialecto *[[https://en.wikipedia.org/wiki/Emacs_Lisp][Emacs Lisp]]* que
+La configuración de Emacs se la hace usando el dialecto *[[https://en.wikipedia.org/wiki/Emacs_Lisp][Emacs Lisp]]* que
 también es llamado *[[https://en.wikipedia.org/wiki/Emacs_Lisp][elisp]]*.
 
 Pero también se la puede hacer usando *ORGMODE* mediante *[[https://daemons.it/posts/programaci%25C3%25B3n-literaria-para-sysadmins-/-devops/][Programación literaria]]*
@@ -127,7 +140,7 @@ En los sistemas *GNU Linux* el archivo se localiza en *$HOME/.emacs.d/init.el*.
 Mas información en [[https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html][Where do I put my init file?]]
 
 *** Repositorios
-Antes de empezara a instalar los paquetes para *GNU Emacs* se debe especificar
+Antes de empezara a instalar los paquetes para *Emacs* se debe especificar
 los repositorios que utilizara *[[https://www.emacswiki.org/emacs/ELPA][ELPA]]*.
 #+BEGIN_SRC emacs-lisp
   (setq package-archives
