@@ -12,7 +12,6 @@
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
 #+REVEAL_THEME: black
 #+REVEAL_PLUGINS: (highlight)
-#+REVEAL_EXTRA_CSS: ./static/css/acm.css
 
 #+STARTUP: beamer
 #+LaTeX_CLASS: beamer
