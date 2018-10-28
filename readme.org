@@ -43,6 +43,8 @@
 
 * Introducción
 ** ¿Que es Emacs?
+#+ATTR_LaTeX: :width 0.3\textwidth :float t :placement [H]
+[[file:img/qrcode.jpg]]
 #+LATEX: \vfill
 Es un editor de texto que dispone de gran cantidad de funciones.
 
