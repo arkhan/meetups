@@ -817,3 +817,10 @@ Algunos valores por defecto a considerar
   (use-package pippel :ensure t)
   (use-package pip-requirements :ensure t)
 #+END_SRC
+* Enlaces de Interés
+#+LATEX: \vfill
+  - Enlaces
+    - [[https://notabug.org/arkhan/dots][arkhan/dots]]
+    - [[https://daemons.it/pages/mi-configuracion-de-emacs/][drymer/emacs.d]]
+    - [[https://github.com/joedicastro/dotfiles/tree/master/emacs/.emacs.d][joedicastro/emacs.d]]
+    - http://emacsrocks.com/
