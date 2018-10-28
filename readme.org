@@ -1,6 +1,6 @@
 #+TITLE: GNU Emacs como editor de código Python
 #+AUTHOR: Edison Ibáñez
-#+EMAIL: edison@disroot.org
+#+EMAIL: arkhan@disroot.org
 #+DATE: 2018-10-28
 #+LANGUAGE: es
 #+DESCRIPTION: Introducción a GNU Emacs como IDE para Python
@@ -20,6 +20,7 @@
 #+LATEX_HEADER: \usepackage{ragged2e}
 #+LATEX_HEADER: \justify
 #+LaTeX_HEADER: \usemintedstyle{emacs}
+#+LaTeX_HEADER: \usepackage{graphicx}
 #+LaTeX_CLASS_OPTIONS: [t,10pt]
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
 #+OPTIONS: H:2
@@ -38,6 +39,8 @@
 #+BEAMER_HEADER: }
 #+BEAMER_HEADER: \hypersetup{colorlinks=true, linkcolor=blue}
 #+BEAMER: \setbeamercovered{transparent=30}
+
+#+STARTUP: inlineimages
 
 * Introducción
 ** ¿Que es Emacs?
@@ -125,24 +128,33 @@ nuevo buffer con el nombre del archivo.
 
 Mayor información [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][Buffers]]
 
-* Configuracion
-** Configuración y Paquetes
+* Configuración Básica
+** Archivo de Configuración
+#+LATEX: \vfill
 La configuración de Emacs se la hace usando el dialecto *[[https://en.wikipedia.org/wiki/Emacs_Lisp][Emacs Lisp]]* que
 también es llamado *[[https://en.wikipedia.org/wiki/Emacs_Lisp][elisp]]*.
 
 Pero también se la puede hacer usando *ORGMODE* mediante *[[https://daemons.it/posts/programaci%25C3%25B3n-literaria-para-sysadmins-/-devops/][Programación literaria]]*
 
-*** Archivo de Configuración
 Lo primero que tenemos que tomar en cuenta es donde tenemos que ubicar el
 archivo de configuración.
 
 En los sistemas *GNU Linux* el archivo se localiza en *$HOME/.emacs.d/init.el*.
 Mas información en [[https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Location-of-init-file.html][Where do I put my init file?]]
 
-*** Repositorios
+** Repositorios
+#+LATEX: \vfill
 Antes de empezara a instalar los paquetes para *Emacs* se debe especificar
 los repositorios que utilizara *[[https://www.emacswiki.org/emacs/ELPA][ELPA]]*.
-#+BEGIN_SRC emacs-lisp
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  ;;; init.el --- Emacs Configuration -*- lexical-binding: t -*-
+  ;;; Commentary:
+  ;; This config start here
+
+  ;;; Code:
+  (setq network-security-level 'high)
+
   (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
@@ -153,84 +165,656 @@ los repositorios que utilizara *[[https://www.emacswiki.org/emacs/ELPA][ELPA]]*.
         ("org" . 0)))
 #+END_SRC
 
-** Styling (Themes & More)
-* Elpy - Python Development
-** Introducción
-The Emacs Lisp Python Environment in Emacs
+** use-package, bind-key & diminish
+#+LATEX: \vfill
+[[https://github.com/jwiegley/use-package][use-package]] es una macro que nos permite aislar y mantener mas
+ordenada la configuración de un paquete.
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq load-prefer-newer t)
 
-Elpy is an Emacs package to bring powerful Python editing to Emacs.
-It combines a number of existing Emacs packages, both written in
-Emacs Lisp as well as Python.
+  (package-initialize)
+  (when (not package-archive-contents)
+    (package-refresh-contents))
 
-** Instalación
-#+BEGIN_SRC emacs-lisp
-    (use-package elpy
-      :ensure t
-      :diminish elpy-mode
-      :config
-      (elpy-enable)
-      (setq elpy-rpc-backend "jedi"
-            elpy-shell-echo-input nil
-            elpy-modules (dolist (elem
-                                  '(elpy-module-sane-defaults
-                                    elpy-module-company
-                                    elpy-module-eldoc
-                                    elpy-module-highlight-indentation
-                                    elpy-module-pyvenv
-                                    elpy-module-yasnippet))))
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 
-      (add-to-list 'company-backends 'elpy-company-backend)
-      (require 'smartparens-python)
-      (with-eval-after-load 'python
-        (defun python-shell-completion-native-try ()
-          "Return non-nil if can trigger native completion."
-          (let ((python-shell-completion-native-enable t)
-                (python-shell-completion-native-output-timeout
-                 python-shell-completion-native-try-output-timeout))
-            (python-shell-completion-native-get-completions
-             (get-buffer-process (current-buffer))
-             nil "_"))))
-
-      (when (require 'flycheck nil t)
-        (validate-setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-        (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-      (use-package flycheck-pycheckers
-        :ensure t
-        :after flycheck
-        :config (setq flycheck-pycheckers-checkers (quote (pylint pep8 flake8 bandit))
-                      flycheck-pycheckers-ignore-codes (quote ("C0411" "C0413" "C0103" "C0111"
-                                                               "W0142" "W0201" "W0232" "W0403"
-                                                               "W0511" "E1002" "E1101" "E1103"
-                                                               "R0201" "R0801" "R0903" "R0904"
-                                                               "R0914" "W0212" "C0301" "E501")))
-
-        :hook (flycheck-mode . flycheck-pycheckers-setup))
-
-      (defun format-all-on-save ()
-        (interactive)
-        (add-hook 'before-save-hook 'format-all-buffer nil t))
-      (add-hook 'elpy-mode-hook 'format-all-on-save)
-
-      (defun add-breakpoint ()
-        "Add a break point"
-        (interactive)
-        (newline-and-indent)
-        (insert "import wdb; wdb.set_trace()"))
-
-      (define-key elpy-mode-map (kbd "C-c C-b") 'add-breakpoint))
-
+  (eval-when-compile
+    (require 'use-package))
+  (use-package diminish :ensure t)
+  (use-package bind-key :ensure t)
 #+END_SRC
-* Additional Python Features
-** Better Syntax Checking (Flycheck v. Flymake)
-** PEP8 Compliance (Autopep8)
-** IPython/Jupyter Integration
-* Additional Emacs Features
-** Git Integration (Magit)
-** Other Modes
-** Emacs In The Terminal
-* Conclusion
-|   1 |   2 |    3 |
-|-----+-----+------|
-| Uno | Dos | Tres |
-|     |     |      |
+
+** Información Personal
+#+LATEX: \vfill
+Vamos a indicarle a GNU Emacs nuestros datos de contacto, que serán
+usados por ejemplo al momento de exportar algún documentos.
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq user-full-name    "Edison Ibáñez"
+        user-mail-address "arkhan@disroot.org")
+#+END_SRC
+
+** Limpiando la Ventana
+*** Interfaz Por Defecto :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:
+#+ATTR_LaTeX: :width 1.0\textwidth :float t :placement [H]
+[[file:img/emacs_dirty_ui.png]]
+*** Interfaz Limpia :B_block:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:
+#+ATTR_LaTeX: :width 1.0\textwidth :float t :placement [H]
+[[file:img/emacs_clean_ui.png]]
+*** next                                                    :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+Para obtener una interfaz mas limpia debilitamos las barras de la interfaz
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  (blink-cursor-mode 0)
+#+END_SRC
+** Extras
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+Algunos valores por defecto a considerar
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq inhibit-startup-screen t
+        initial-scratch-message nil
+        visible-bell t
+        apropos-do-all t
+        large-file-warning-threshold 100000000)
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (toggle-indicate-empty-lines)
+  (delete-selection-mode)
+  (blink-cursor-mode -1)
+
+  (defalias 'list-buffers 'ibuffer)
+
+  (set-terminal-coding-system  'utf-8)
+  (set-keyboard-coding-system  'utf-8)
+  (set-language-environment    'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (setq locale-coding-system   'utf-8)
+  (prefer-coding-system        'utf-8)
+  (set-input-method nil)
+
+  (setq auto-save-default nil
+        auto-save-list-file-prefix nil
+        make-backup-files nil)
+
+  (setq-default indent-tabs-mode  nil
+                default-tab-width 4
+                c-basic-offset 4)
+
+  (setq show-paren-delay 0)
+  (show-paren-mode t)
+
+  (global-hl-line-mode 1)
+
+  (column-number-mode t)
+  (setq size-indication-mode t)
+  (which-function-mode 1)
+
+  (setq select-enable-primary t)
+
+  (global-set-key "\C-w" 'backward-kill-word)
+  (global-set-key "\C-x\C-k" 'kill-region)
+  (global-set-key "\C-c\C-k" 'kill-region)
+
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'text-mode-hook
+            '(lambda() (set-fill-column 80)))
+
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "firefox")
+#+END_SRC
+** Ivy
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package flx :ensure t)
+  (use-package smex :ensure t)
+
+  (use-package ivy
+    :ensure t
+    :diminish ivy-mode
+    :bind (:map ivy-mode-map
+                ("C-'" . ivy-avy))
+    :config
+    (setq ivy-wrap t
+          ivy-virtual-abbreviate 'full
+          ivy-use-virtual-buffers t
+          ivy-use-selectable-prompt t
+          ivy-count-format "(%d/%d) "
+          ivy-re-builders-alist
+          '((read-file-name-internal . ivy--regex-fuzzy)
+            (t . ivy--regex-plus))
+          ivy-on-del-error-function nil
+          ivy-initial-inputs-alist nil)
+
+    (ivy-mode 1))
+
+  (setq confirm-nonexistent-file-or-buffer t)
+
+  (use-package swiper
+    :bind* (("C-s" . swiper)
+            ("C-r" . swiper)
+            ("C-M-s" . swiper-all))
+    :bind (:map read-expression-map
+                ("C-r" . counsel-expression-history)))
+
+  (use-package counsel
+    :bind (("M-x" . counsel-M-x)
+           ("C-c b" . counsel-imenu)
+           ("C-x C-f" . counsel-find-file)
+           ("C-x C-r" . counsel-rg)
+           ("C-h f" . counsel-describe-function)
+           ("C-h v" . counsel-describe-variable)
+           ("C-h b" . counsel-descbinds)
+           ("M-y" . counsel-yank-pop)
+           ("M-SPC" . counsel-shell-history))
+    :config
+    (setq counsel-find-file-at-point t
+          counsel-rg-base-command "rg -uuu -S --no-heading --line-number --color never %s ."))
+#+END_SRC
+** Tema
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package ujelly-theme
+    :ensure t
+    :config (load-theme 'ujelly t))
+#+END_SRC
+** Tipo de Letra
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 90)
+  (set-fontset-font "fontset-default" nil
+                    (font-spec :size 20 :name "Symbola"))
+#+END_SRC
+** Barra de Estado
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq line-number-mode t
+        column-number-mode t)
+
+  (use-package smart-mode-line
+    :ensure t
+    :config (setq sml/no-confirm-load-theme t
+                  sml/theme 'dark
+                  sml/vc-mode-show-backend t
+                  sml/mode-width 'full
+                  sml/shorten-modes t)
+    (sml/setup))
+#+END_SRC
+* Programación
+** Comment-dwim-2
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package comment-dwim-2
+    :ensure t
+    :bind* ("M-;" . comment-dwim-2))
+#+END_SRC
+** Company
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package company
+    :ensure t
+    :init
+    (setq company-backends '((company-files
+                              company-keywords
+                              company-capf
+                              company-yasnippet)
+                             (company-abbrev company-dabbrev)))
+    (setq company-auto-complete nil
+          company-echo-delay 0
+          company-idle-delay 0.2
+          company-minimum-prefix-length 1
+          company-tooltip-align-annotations t
+          company-tooltip-limit 20
+          company-transformers '(company-sort-by-occurrence))
+    (global-company-mode))
+
+  (defun company-mode/backend-with-yas (backend)
+    (if (or (and (listp backend) (member 'company-yasnippet backend)))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (add-hook 'company-mode-hook (lambda () (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))) t)
+
+  (defun add-pcomplete-to-capf ()
+    (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+  (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+
+  (use-package company-quickhelp
+    :ensure t
+    :after company
+    :config (company-quickhelp-mode 1))
+#+END_SRC
+** Fill Column Indicator
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package fill-column-indicator
+    :ensure t
+    :commands (fci-mode)
+    :init (setq fci-rule-width 5
+                fci-rule-column 79))
+#+END_SRC
+** Flycheck
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package flycheck
+    :ensure t
+    :bind (("C-c e n" . flycheck-next-error)
+           ("C-c e p" . flycheck-previous-error))
+    :config
+    (add-hook 'after-init-hook #'global-flycheck-mode)
+
+    (setq-default flycheck-disabled-checkers
+                  (append flycheck-disabled-checkers
+                          '(javascript-jshint)))
+
+    (setq-default flycheck-disabled-checkers
+                  (append flycheck-disabled-checkers
+                          '(json-jsonlist))))
+#+END_SRC
+** Git
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (setq vc-follows-symlinks t
+        find-file-visit-truename t
+        vc-handled-backends nil)
+
+  (use-package magit
+    :ensure t
+    :bind (("C-x g c" . magit-commit)
+           ("C-x g e" . magit-ediff-resolve)
+           ("C-x g g" . magit-grep)
+           ("C-x g l" . magit-file-log)
+           ("C-x g p" . magit-push)
+           ("C-x g r" . magit-rebase-interactive)
+           ("C-x g s" . magit-status)
+           ("C-x g u" . magit-pull)
+           ("C-x g x" . magit-checkout))
+    :init
+    (progn
+      (setq magit-git-executable "tg")
+      (delete 'Git vc-handled-backends)
+      (defadvice magit-status (around magit-fullscreen activate)
+        (window-configuration-to-register :magit-fullscreen)
+        ad-do-it
+        (delete-other-windows))
+      (defadvice git-commit-commit (after delete-window activate)
+        (delete-window))
+      (defadvice git-commit-abort (after delete-window activate)
+        (delete-window))
+      (defun magit-commit-mode-init ()
+        (when (looking-at "\n")
+          (open-line 1))))
+    :config
+    (progn
+      (defadvice magit-quit-window (around magit-restore-screen activate)
+        (let ((current-mode major-mode))
+          ad-do-it
+          (when (eq 'magit-status-mode current-mode)
+            (jump-to-register :magit-fullscreen))))
+      (defun magit-maybe-commit (&optional show-options)
+        "Runs magit-commit unless prefix is passed"
+        (interactive "P")
+        (if show-options
+            (magit-key-mode-popup-committing)
+          (magit-commit)))
+      (define-key magit-mode-map "c" 'magit-maybe-commit)
+
+      (setq magit-completing-read-function 'ivy-completing-read
+            magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
+            magit-status-buffer-switch-function 'switch-to-buffer
+            magit-diff-refine-hunk t
+            magit-rewrite-inclusive 'ask
+            magit-process-find-password-functions '(magit-process-password-auth-source)
+            magit-save-some-buffers t
+            magit-process-popup-time 10
+            magit-set-upstream-on-push 'askifnotset
+            magit-refs-show-commit-count 'all
+            magit-log-buffer-file-locket t)))
+
+  (use-package git-gutter
+    :ensure t
+    :defer 1
+    :bind (("C-x C-g" . git-gutter)
+           ("C-x v =" . git-gutter:popup-hunk)
+           ("C-x p" . git-gutter:previous-hunk)
+           ("C-x n" . git-gutter:next-hunk)
+           ("C-x v s" . git-gutter:stage-hunk)
+           ("C-x v r" . git-gutter:revert-hunk)
+           ("C-x v SPC" . git-gutter:mark-hunk))
+    :config
+    (if (display-graphic-p)
+        (use-package git-gutter-fringe
+          :ensure t))
+    (global-git-gutter-mode t)
+    (setq-default fringes-outside-margins t)
+    (setq indicate-empty-lines nil)
+    (setq git-gutter:lighter ""
+          git-gutter:handled-backends '(git hg bzr svn))
+    (set-face-foreground 'git-gutter:modified "purple")
+    (set-face-foreground 'git-gutter:added "green")
+    (set-face-foreground 'git-gutter:deleted "red"))
+
+  (use-package gitconfig-mode
+    :ensure t
+    :mode ("/\\.?git/?config$"
+           "/\\.gitmodules$")
+    :init (add-hook 'gitconfig-mode-hook 'flyspell-mode))
+
+  (use-package gitignore-mode
+    :ensure t
+    :mode ("/\\.gitignore$"
+           "/\\.git/info/exclude$"
+           "/git/ignore$"))
+
+  (use-package gitattributes-mode
+    :ensure t
+    :defer t)
+
+  (use-package git-timemachine
+    :ensure t
+    :commands git-timemachine
+    :bind (:map git-timemachine-mode
+                ("c" . git-timemachine-show-current-revision)
+                ("b" . git-timemachine-switch-branch)))
+
+  (use-package smerge-mode
+    :ensure t
+    :config
+    (defun enable-smerge-maybe ()
+      (when (and buffer-file-name (vc-backend buffer-file-name))
+        (save-excursion
+          (goto-char (point-min))
+          (when (re-search-forward "^<<<<<<< " nil t)
+            (smerge-mode +1)))))
+
+    (add-hook 'buffer-list-update-hook #'enable-smerge-maybe))
+#+END_SRC
+** Iedit
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package iedit
+    :ensure t)
+#+END_SRC
+** move-dup
+#+BEGIN_SRC emacs-lisp
+  (use-package move-dup
+    :ensure t
+    :diminish move-dup-mode
+    :bind (("S-M-<up>" . md/move-lines-up)
+           ("S-M-<down>" . md/move-lines-down)
+           ("C-M-<up>" . 'md/duplicate-up)
+           ("C-M-<down>" . 'md/duplicate-down))
+    :init (global-move-dup-mode))
+#+END_SRC
+** Parents
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (electric-pair-mode 1)
+
+  (use-package paren
+    :init (show-paren-mode)
+    :config
+    (set-face-background 'show-paren-match (face-background 'default))
+    (set-face-foreground 'show-paren-match "#def")
+    (set-face-attribute 'show-paren-match nil :weight 'extra-bold))
+
+  (use-package smartparens
+    :ensure t
+    :commands
+    (smartparens-mode
+     smartparens-strict-mode)
+    :bind
+    (:map smartparens-strict-mode-map
+          ("C-}" . sp-forward-slurp-sexp)
+          ("M-s" . sp-backward-unwrap-sexp)
+          ("C-c [" . sp-select-next-thing)
+          ("C-c ]" . sp-select-next-thing-exchange))
+    :config
+    (require 'smartparens-config))
+
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+** PO
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp
+  (use-package po-mode
+    :ensure t
+    :config
+    ;; Fuente: https://www.emacswiki.org/emacs/PoMode
+    (defun po-wrap ()
+      "Filter current po-mode buffer through `msgcat' tool to wrap all lines."
+      (interactive)
+      (if (eq major-mode 'po-mode)
+          (let ((tmp-file (make-temp-file "po-wrap."))
+                (tmp-buf (generate-new-buffer "*temp*")))
+            (unwind-protect
+                (progn
+                  (write-region (point-min) (point-max) tmp-file nil 1)
+                  (if (zerop
+                       (call-process
+                        "msgcat" nil tmp-buf t (shell-quote-argument tmp-file)))
+                      (let ((saved (point))
+                            (inhibit-read-only t))
+                        (delete-region (point-min) (point-max))
+                        (insert-buffer tmp-buf)
+                        (goto-char (min saved (point-max))))
+                    (with-current-buffer tmp-buf
+                      (error (buffer-string)))))
+              (kill-buffer tmp-buf)
+              (delete-file tmp-file)))))
+
+    (defun po-guess-language ()
+      "Return the language related to this PO file."
+      (save-excursion
+        (goto-char (point-min))
+        (re-search-forward po-any-msgstr-block-regexp)
+        (goto-char (match-beginning 0))
+        (if (re-search-forward
+             "\n\"Language: +\\(.+\\)\\\\n\"$"
+             (match-end 0) t)
+            (po-match-string 1))))
+
+    (defadvice po-edit-string (around setup-spell-checking (string type expand-tabs) activate)
+      "Set up spell checking in subedit buffer."
+      (let ((po-language (po-guess-language)))
+        ad-do-it
+        (if po-language
+            (progn
+              (ispell-change-dictionary po-language)
+              (turn-on-flyspell)
+              (flyspell-buffer))))))
+#+END_SRC
+** Projectile
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package projectile
+    :ensure t
+    :diminish projectile-mode
+    :config
+    (setq projectile-file-exists-remote-cache-expire (* 10 60)
+          projectile-indexing-method 'alien
+          projectile-enable-caching t
+          projectile-completion-system 'ivy)
+    (projectile-mode))
+
+  (use-package counsel-projectile
+    :ensure t
+    :bind ("C-x r R" . counsel-projectile-rg)
+    :config
+    (setq counsel-projectile-rg-options-history (list "-uuu"))
+    (add-hook 'text-mode-hook 'counsel-projectile-mode)
+    (add-hook 'prog-mode-hook 'counsel-projectile-mode))
+
+  (use-package term-projectile
+    :ensure t)
+
+  (use-package rg
+    :ensure t
+    :config (setq rg-command-line-flags (list "-uuu")))
+#+END_SRC
+** Rainbow
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package rainbow-mode
+    :ensure t
+    :diminish rainbow-mode
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-mode)
+    (add-hook 'conf-mode-hook 'rainbow-mode))
+#+END_SRC
+** Shell
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package terminal-here
+    :ensure t
+    :bind (("C-<f5>" . terminal-here-launch)
+           ("C-<f6>" . terminal-here-project-launch)))
+#+END_SRC
+** Undo Tree
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package undo-tree
+    :ensure t
+    :diminish undo-tree-mode
+    :init
+    (progn
+      (global-undo-tree-mode)
+      (setq undo-tree-auto-save-history t
+            undo-tree-visualizer-timestamps t
+            undo-tree-visualizer-diff t))
+    (add-hook 'write-file-functions #'undo-tree-save-history-hook)
+    (add-hook 'find-file-hook #'undo-tree-load-history-hook))
+#+END_SRC
+** Yassnippet
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package yasnippet
+    :ensure t
+    :defer 2
+    :config (yas-global-mode))
+
+  (use-package yasnippet-snippets
+    :ensure t)
+#+END_SRC
+* Python
+** Elpy
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package elpy
+    :ensure t
+    :diminish elpy-mode
+    :config
+    (elpy-enable)
+    (setq elpy-rpc-backend "jedi"
+          elpy-shell-echo-input nil
+          elpy-modules (dolist (elem
+                                '(elpy-module-sane-defaults
+                                  elpy-module-company
+                                  elpy-module-eldoc
+                                  elpy-module-highlight-indentation
+                                  elpy-module-pyvenv
+                                  elpy-module-yasnippet))))
+
+    (add-to-list 'company-backends 'elpy-company-backend)
+    (require 'smartparens-python)
+    (with-eval-after-load 'python
+      (defun python-shell-completion-native-try ()
+        "Return non-nil if can trigger native completion."
+        (let ((python-shell-completion-native-enable t)
+              (python-shell-completion-native-output-timeout
+               python-shell-completion-native-try-output-timeout))
+          (python-shell-completion-native-get-completions
+           (get-buffer-process (current-buffer))
+           nil "_"))))
+
+    (when (require 'flycheck nil t)
+      (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+      (add-hook 'elpy-mode-hook 'flycheck-mode)))
+#+END_SRC
+** Debug
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (defun add-breakpoint ()
+    "Add a break point"
+    (interactive)
+    (newline-and-indent)
+    (insert "import pdb; pdb.set_trace()"))
+
+  (define-key elpy-mode-map (kbd "C-c C-b") 'add-breakpoint)
+#+END_SRC
+** Isort
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package py-isort
+    :ensure t
+    :config
+    (setq py-isort-options '("--lines=100"))
+    (add-hook 'before-save-hook 'py-isort-before-save))
+#+END_SRC
+** Virtualenv
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks,label=
+   :END:
+#+LATEX: \small
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package pyvenv
+    :config (defalias 'workon 'pyvenv-workon))
+
+  (use-package auto-virtualenv
+    :ensure t
+    :config
+    (add-hook 'elpy-mode-hook 'auto-virtualenv-set-virtualenv))
+
+  (use-package virtualenvwrapper
+    :ensure t
+    :commands (venv-workon venv-deactivate
+               venv-initialize-interactive-shells venv-initialize-eshell)
+    :init
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell)
+    (setq venv-location "~/.virtualenvs")
+    :config
+    (add-hook 'venv-postmkvirtualenv-hook
+              (lambda () (shell-command "pip install jedi rope
+                                    isort importmagic autopep8 yapf
+                                    flake8 virtualenvwrapper"))))
+#+END_SRC
+** Varios
+#+BEGIN_SRC emacs-lisp :tangle init.el
+  (use-package pyimport :ensure t)
+  (use-package pippel :ensure t)
+  (use-package pip-requirements :ensure t)
+#+END_SRC
