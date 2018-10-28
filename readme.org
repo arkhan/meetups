@@ -824,3 +824,4 @@ Algunos valores por defecto a considerar
     - [[https://daemons.it/pages/mi-configuracion-de-emacs/][drymer/emacs.d]]
     - [[https://github.com/joedicastro/dotfiles/tree/master/emacs/.emacs.d][joedicastro/emacs.d]]
     - http://emacsrocks.com/
+    - [[https://cestlaz.github.io/stories/emacs/][C'est La Z]]
