@@ -43,8 +43,9 @@
 
 * Introducción
 ** ¿Que es Emacs?
+#+ATTR_ORG: :width 1200
 #+ATTR_LaTeX: :width 0.3\textwidth :float t :placement [H]
-[[file:img/qrcode.jpg]]
+[[file:img/qrcode.png][QrCode]]
 #+LATEX: \vfill
 Es un editor de texto que dispone de gran cantidad de funciones.
 
@@ -64,23 +65,23 @@ La mayoría de las distribuciones de GNU/Linux proporcionan Emacs
 en sus repositorios, esta es la forma recomendada de Instalarlo, para
 disponer de la ultima verison.
 **** Archlinux                                                      :B_block:
-     :PROPERTIES:
-     :BEAMER_env: block
-     :END:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
 #+BEGIN_SRC sh
   $ sudo pacman -S emacs
 #+END_SRC
-**** Ubuntu/Debian y derivados                                      :B_block:
-     :PROPERTIES:
-     :BEAMER_env: block
-     :END:
+**** Ubuntu/Debian y derivados :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
 #+BEGIN_SRC sh
   $ sudo apt-get install emacs
 #+END_SRC
 **** Fedora/Centos y derivados                                      :B_block:
-     :PROPERTIES:
-     :BEAMER_env: block
-     :END:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
 #+BEGIN_SRC sh
   $ sudo yum install emacs
 #+END_SRC

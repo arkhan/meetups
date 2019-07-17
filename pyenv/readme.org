@@ -1,0 +1,25 @@
+#+TITLE: Manejo de Multiples Versiones de Python con PYENV
+* Why Use pyenv?
+** Why Not Use System Python?
+** What About a Package Manager?
+* Installing pyenv
+** Build Dependencies
+** Using the pyenv-installer
+* Using pyenv to Install Python
+** Installation Location
+** Using Your New Python
+* Exploring pyenv Commands
+** install
+** versions
+** which
+** global
+** local
+** shell
+* Specifying Your Python Version
+* Virtual Environments and pyenv
+** Creating Virtual Environments
+** Activating Your Versions
+* Working With Multiple Environments
+* Activating Multiple Versions Simultaneously
+* Conclusion
+* Bonus: Displaying Your Environment Name in Your Command Prompt
